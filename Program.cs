@@ -78,9 +78,7 @@ namespace Heist_II
             */
             Bank bank = new Bank();
             Dictionary<string, int> bankProps = new Dictionary<string, int>();
-            // add the bank props to the dict
-            // order the dictionary keys by value
-            // display the max and min
+
             bankProps["Alarm"] = bank.AlarmScore;
             bankProps["Guards"] = bank.SecurityGuardScore;
             bankProps["Vault"] = bank.VaultScore;
@@ -136,18 +134,33 @@ namespace Heist_II
                 }
             } while (crewMemberSelection.Length > 0 && rolodex.Count > 0);
 
-            /*
-                Create a new List<IRobber> and store it in a variable called crew.
-                Prompt the user to enter the index of the operative they'd like to include in the heist.
-                Once the user selects an operative, add them to the crew list.
-            */
+            // run the heist
+            Console.WriteLine();
+            Console.WriteLine("Here we go...");
+            Console.WriteLine();
 
-            /*
-                Allow the user to select as many crew members as they'd like from the rolodex.
-                Continue to print out the report after each crew member is selected,
-                    but the report should not include operatives that have already been added to the crew,
-                        or operatives that require a percentage cut that can't be offered.
-            */
+            foreach (Robber teamMember in team)
+            {
+                teamMember.PerformSkill(bank);
+            }
+
+            Console.WriteLine();
+            if (bank.IsSecure == false)
+            {
+                Console.WriteLine(" --- SUCCESS --- ");
+                Console.WriteLine("Here's your payday:");
+                foreach (Robber teamMember in team)
+                {
+                    Console.WriteLine(
+                        $"{teamMember.Name}: ${bank.CashOnHand * teamMember.PercentageCut / 100}"
+                    );
+                }
+            }
+            else
+            {
+                Console.WriteLine(" --- BUSTED --- ");
+                Console.WriteLine("What were you thinking?! I hope you have a great lawyer...");
+            }
         }
     }
 }
