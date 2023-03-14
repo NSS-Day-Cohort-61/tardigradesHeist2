@@ -8,7 +8,6 @@ namespace Heist_II
     {
         static void Main(string[] args)
         {
-
             List<IRobber> rolodex = new List<IRobber>()
             {
                 new LockSpecialist("Jeff", 88, 25),
@@ -131,9 +130,11 @@ namespace Heist_II
                     team.Add(rolodex[crewMemberIndex]);
                     sumOfCuts += rolodex[crewMemberIndex].PercentageCut;
                     rolodex.RemoveAt(crewMemberIndex);
-                    rolodex = rolodex.Where(crewMember => crewMember.PercentageCut + sumOfCuts <= 100).ToList();
+                    rolodex = rolodex
+                        .Where(crewMember => crewMember.PercentageCut + sumOfCuts <= 100)
+                        .ToList();
                 }
-            } while (crewMemberSelection.Length > 0 || rolodex.Count > 0);
+            } while (crewMemberSelection.Length > 0 && rolodex.Count > 0);
 
             /*
                 Create a new List<IRobber> and store it in a variable called crew.
