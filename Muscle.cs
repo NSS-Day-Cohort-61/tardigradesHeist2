@@ -2,12 +2,12 @@ using System;
 
 namespace Hesit_II
 {
-    public class Hacker : IRobber
+    public class Muscle : IRobber
     {
         public string Name { get; set; }
         public int SkillLevel { get; set; }
         public int PercentageCut { get; set; }
-         public Hacker(string name, int skillLevel, int percentageCut) {
+        public Muscle(string name, int skillLevel, int percentageCut) {
             Name = name;
             SkillLevel = skillLevel;
             PercentageCut = percentageCut;
@@ -15,14 +15,14 @@ namespace Hesit_II
 
         public void PerformSkill(Bank BankParam)
         {
-            BankParam.AlarmScore -= SkillLevel;
-            if (BankParam.AlarmScore <= 0)
+            BankParam.SecurityGuardScore -= SkillLevel;
+            if (BankParam.SecurityGuardScore <= 0)
             {
-                Console.WriteLine($"{Name} has disabled the alarm system!");
+                Console.WriteLine($"{Name} has beaten the hell out of the security!");
             }
             else
             {
-                Console.WriteLine($"{Name} is hacking the alarm system. Decreased security {SkillLevel} points");
+                Console.WriteLine($"{Name} is giving security a swirly. Decreased security {SkillLevel} points");
             }
         }
     }
