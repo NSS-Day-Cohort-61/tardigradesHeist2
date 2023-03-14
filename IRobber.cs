@@ -1,6 +1,6 @@
 using System;
 
-namespace Hesit_II
+namespace Heist_II
 {
     public interface IRobber
     {

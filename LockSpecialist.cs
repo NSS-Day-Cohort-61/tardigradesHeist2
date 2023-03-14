@@ -1,13 +1,14 @@
 using System;
 
-namespace Hesit_II
+namespace Heist_II
 {
     public class LockSpecialist : IRobber
     {
         public string Name { get; set; }
         public int SkillLevel { get; set; }
         public int PercentageCut { get; set; }
-         public LockSpecialist(string name, int skillLevel, int percentageCut) {
+        public LockSpecialist(string name, int skillLevel, int percentageCut)
+        {
             Name = name;
             SkillLevel = skillLevel;
             PercentageCut = percentageCut;
