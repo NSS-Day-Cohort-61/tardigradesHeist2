@@ -14,10 +14,9 @@ namespace Heist_II
 
         public void DisplayCrewMemberReport()
         {
-            Console.WriteLine($"Name: {Name}");
-            Console.WriteLine($"Specialty: {Specialty}");
-            Console.WriteLine($"Skill Level: {SkillLevel}");
-            Console.WriteLine($"Cut: {PercentageCut}%");
+            Console.WriteLine($"    Specialty: {Specialty}");
+            Console.WriteLine($"    Skill Level: {SkillLevel}");
+            Console.WriteLine($"    Cut: {PercentageCut}%");
         }
     }
 }

@@ -83,11 +83,6 @@ namespace Heist_II
                 (don't print the actual integer scores--just the name, i.e. Most Secure: Alarm Least Secure: Vault
             */
             Bank bank = new Bank();
-            /*
-                we need to see the value and the name of each property
-                somehow need to get this ordered
-                but that means we need some way
-            */
             Dictionary<string, int> bankProps = new Dictionary<string, int>();
             // add the bank props to the dict
             // order the dictionary keys by value
@@ -110,14 +105,49 @@ namespace Heist_II
                 $"Least secure: {sortedBankPropsList[sortedBankPropsList.Count - 1].Key}"
             );
 
-            // loop over the list of crew and display a report about each team member
-            Console.WriteLine();
-            Console.WriteLine(" --- ROLODEX --- ");
-            foreach (Robber crewMember in rolodex)
+            List<IRobber> team = new List<IRobber>();
+            string crewMemberSelection = "";
+
+            do
             {
+                // loop over the list of crew and display a report about each team member
                 Console.WriteLine();
-                crewMember.DisplayCrewMemberReport();
-            }
+                Console.WriteLine(" --- ROLODEX --- ");
+
+                int idx = 1;
+                foreach (Robber crewMember in rolodex)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine($"{idx}. {crewMember.Name}");
+                    crewMember.DisplayCrewMemberReport();
+                    idx++;
+                }
+
+                Console.WriteLine();
+                Console.Write($"Please enter the number of the operative you want to add: ");
+                crewMemberSelection = Console.ReadLine();
+
+                if (crewMemberSelection.Length > 0)
+                {
+                    int crewMemberIndex = int.Parse(crewMemberSelection) - 1;
+                    // this is in place of a .Pop method
+                    team.Add(rolodex[crewMemberIndex]);
+                    rolodex.RemoveAt(crewMemberIndex);
+                }
+            } while (crewMemberSelection.Length > 0);
+
+            /*
+                Create a new List<IRobber> and store it in a variable called crew.
+                Prompt the user to enter the index of the operative they'd like to include in the heist.
+                Once the user selects an operative, add them to the crew list.
+            */
+
+            /*
+                Allow the user to select as many crew members as they'd like from the rolodex.
+                Continue to print out the report after each crew member is selected,
+                    but the report should not include operatives that have already been added to the crew,
+                        or operatives that require a percentage cut that can't be offered.
+            */
         }
     }
 }
