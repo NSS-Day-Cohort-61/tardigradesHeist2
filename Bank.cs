@@ -9,6 +9,14 @@ namespace Heist_II
         public int VaultScore { get; set; }
         public int SecurityGuardScore { get; set; }
 
+        public Bank()
+        {
+            AlarmScore = new Random().Next(0, 101);
+            VaultScore = new Random().Next(0, 101);
+            SecurityGuardScore = new Random().Next(0, 101);
+            CashOnHand = new Random().Next(50000, 1000000);
+        }
+
         public bool IsSecure
         {
             get
@@ -21,7 +29,6 @@ namespace Heist_II
                 {
                     return false;
                 }
-
             }
         }
     }

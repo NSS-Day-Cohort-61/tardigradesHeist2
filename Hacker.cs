@@ -2,19 +2,17 @@ using System;
 
 namespace Heist_II
 {
-    public class Hacker : IRobber
+    public class Hacker : Robber, IRobber
     {
-        public string Name { get; set; }
-        public int SkillLevel { get; set; }
-        public int PercentageCut { get; set; }
         public Hacker(string name, int skillLevel, int percentageCut)
         {
             Name = name;
             SkillLevel = skillLevel;
+            Specialty = "Hacker";
             PercentageCut = percentageCut;
         }
 
-        public void PerformSkill(Bank BankParam)
+        public override void PerformSkill(Bank BankParam)
         {
             BankParam.AlarmScore -= SkillLevel;
             if (BankParam.AlarmScore <= 0)
@@ -23,7 +21,9 @@ namespace Heist_II
             }
             else
             {
-                Console.WriteLine($"{Name} is hacking the alarm system. Decreased security {SkillLevel} points");
+                Console.WriteLine(
+                    $"{Name} is hacking the alarm system. Decreased security {SkillLevel} points"
+                );
             }
         }
     }
