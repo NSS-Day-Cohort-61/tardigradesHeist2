@@ -8,11 +8,6 @@ namespace Heist_II
     {
         static void Main(string[] args)
         {
-            // List<string> specialties = new List<string>()
-            // {
-            //     "Lock Specialist",
-
-            // }
 
             List<IRobber> rolodex = new List<IRobber>()
             {
@@ -111,23 +106,18 @@ namespace Heist_II
 
             do
             {
-                foreach(IRobber teamMember in team)
-                {
-                    sumOfCuts += teamMember.PercentageCut;
-                }
                 // loop over the list of crew and display a report about each team member
                 Console.WriteLine();
                 Console.WriteLine(" --- ROLODEX --- ");
 
-                rolodex = rolodex.Where(crewMember => crewMember.PercentageCut + sumOfCuts < 100).ToList();
                 int idx = 1;
+
                 foreach (Robber crewMember in rolodex)
                 {
                     Console.WriteLine();
                     Console.WriteLine($"{idx}. {crewMember.Name}");
                     crewMember.DisplayCrewMemberReport();
                     idx++;
-                    sumOfCuts += crewMember.PercentageCut;
                 }
 
                 Console.WriteLine();
@@ -139,7 +129,9 @@ namespace Heist_II
                     int crewMemberIndex = int.Parse(crewMemberSelection) - 1;
                     // this is in place of a .Pop method
                     team.Add(rolodex[crewMemberIndex]);
+                    sumOfCuts += rolodex[crewMemberIndex].PercentageCut;
                     rolodex.RemoveAt(crewMemberIndex);
+                    rolodex = rolodex.Where(crewMember => crewMember.PercentageCut + sumOfCuts <= 100).ToList();
                 }
             } while (crewMemberSelection.Length > 0 || rolodex.Count > 0);
 
