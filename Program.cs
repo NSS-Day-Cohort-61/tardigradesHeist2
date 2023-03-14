@@ -107,13 +107,19 @@ namespace Heist_II
 
             List<IRobber> team = new List<IRobber>();
             string crewMemberSelection = "";
+            int sumOfCuts = 0;
 
             do
             {
+                foreach(IRobber teamMember in team)
+                {
+                    sumOfCuts += teamMember.PercentageCut;
+                }
                 // loop over the list of crew and display a report about each team member
                 Console.WriteLine();
                 Console.WriteLine(" --- ROLODEX --- ");
 
+                rolodex = rolodex.Where(crewMember => crewMember.PercentageCut + sumOfCuts < 100).ToList();
                 int idx = 1;
                 foreach (Robber crewMember in rolodex)
                 {
@@ -121,6 +127,7 @@ namespace Heist_II
                     Console.WriteLine($"{idx}. {crewMember.Name}");
                     crewMember.DisplayCrewMemberReport();
                     idx++;
+                    sumOfCuts += crewMember.PercentageCut;
                 }
 
                 Console.WriteLine();
@@ -134,7 +141,7 @@ namespace Heist_II
                     team.Add(rolodex[crewMemberIndex]);
                     rolodex.RemoveAt(crewMemberIndex);
                 }
-            } while (crewMemberSelection.Length > 0);
+            } while (crewMemberSelection.Length > 0 || rolodex.Count > 0);
 
             /*
                 Create a new List<IRobber> and store it in a variable called crew.
