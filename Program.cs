@@ -50,14 +50,42 @@ namespace Heist_II
                             Console.WriteLine("Please choose 1, 2, or 3.");
                         }
                     }
-
-                    // once specialty has been entered prompt to enter crew members skill level as int between 1-100
+                    int newCrewSkillLevel;
+                    while (true)
+                    {
                     Console.Write("Please enter crew member skill level from 1-100: ");
-                    int newCrewSkillLevel = int.Parse(Console.ReadLine());
+                    string levelInput = Console.ReadLine();
+                    bool isNum = int.TryParse(levelInput, out newCrewSkillLevel); 
+                    if (isNum == true && newCrewSkillLevel >= 1 && newCrewSkillLevel <= 100)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("You blew it, enter a number between 1 and 100");
+                    }
+                    }
 
                     // then prompt user to enter percentage of cut for each mission
+                    int newCrewPercentage = -1;
+                    do 
+                    {
                     Console.Write("Please enter percentage of cut for each mission: ");
-                    int newCrewPercentage = int.Parse(Console.ReadLine());
+                    string newCrewPercentageString = (Console.ReadLine());
+                    int newnewnew;
+                    bool isNum = int.TryParse(newCrewPercentageString, out newnewnew);
+                    if (isNum && newnewnew >= 1 && newnewnew <= 100)
+                    {
+                        newCrewPercentage = newnewnew;
+                    }
+                    else
+                    {
+                        Console.WriteLine("....between 1 and 100....");
+                    }
+                    }
+                    while (newCrewPercentage == -1);
+                    
+
 
                     // once user entered all 3 make instance of appropriate class for that crew member and add to rolodex
                     switch (newCrewSpecialty)
