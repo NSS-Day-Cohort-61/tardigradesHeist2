@@ -117,20 +117,33 @@ namespace Heist_II
                     idx++;
                 }
 
-                Console.WriteLine();
-                Console.Write($"Please enter the number of the operative you want to add: ");
-                crewMemberSelection = Console.ReadLine();
-
-                if (crewMemberSelection.Length > 0)
+                int crewMemberIndex;
+                while (true)
                 {
-                    int crewMemberIndex = int.Parse(crewMemberSelection) - 1;
-                    // this is in place of a .Pop method
-                    team.Add(rolodex[crewMemberIndex]);
-                    sumOfCuts += rolodex[crewMemberIndex].PercentageCut;
-                    rolodex.RemoveAt(crewMemberIndex);
-                    rolodex = rolodex
-                        .Where(crewMember => crewMember.PercentageCut + sumOfCuts <= 100)
-                        .ToList();
+                    Console.WriteLine();
+                    Console.Write($"Please enter the number of the operative you want to add: ");
+                    crewMemberSelection = Console.ReadLine();
+
+                    if (crewMemberSelection.Length > 0)
+                    {
+                        bool isNumber = int.TryParse(crewMemberSelection, out crewMemberIndex);
+
+                        if (isNumber && crewMemberIndex >= 1 && crewMemberIndex <= rolodex.Count)
+                        {
+                            // this is in place of a .Pop method
+                            team.Add(rolodex[crewMemberIndex - 1]);
+                            sumOfCuts += rolodex[crewMemberIndex - 1].PercentageCut;
+                            rolodex.RemoveAt(crewMemberIndex - 1);
+                            rolodex = rolodex
+                                .Where(crewMember => crewMember.PercentageCut + sumOfCuts <= 100)
+                                .ToList();
+                            break;
+                        }
+                        else
+                            Console.WriteLine(
+                                $"Please choose an operative # between 1 and {rolodex.Count}"
+                            );
+                    }
                 }
             } while (crewMemberSelection.Length > 0 && rolodex.Count > 0);
 
