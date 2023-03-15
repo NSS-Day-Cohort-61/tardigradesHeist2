@@ -28,14 +28,28 @@ namespace Heist_II
 
                 if (newCrewName.Length > 0)
                 {
-                    Console.Write(
-                        @"Choose a specialty for this crew member:
-                1. Lock Specialist
-                2. Muscle
-                3. Hacker
-                : "
-                    );
-                    int newCrewSpecialty = int.Parse(Console.ReadLine());
+                    int newCrewSpecialty;
+                    while (true)
+                    {
+                        Console.Write(
+                            @"Choose a specialty for this crew member:
+        1. Lock Specialist
+        2. Muscle
+        3. Hacker
+        : "
+                        );
+                        string specialtyInput = Console.ReadLine();
+                        bool isNumber = int.TryParse(specialtyInput, out newCrewSpecialty);
+
+                        if (isNumber && newCrewSpecialty >= 1 && newCrewSpecialty <= 3)
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Please choose 1, 2, or 3.");
+                        }
+                    }
 
                     // once specialty has been entered prompt to enter crew members skill level as int between 1-100
                     Console.Write("Please enter crew member skill level from 1-100: ");
