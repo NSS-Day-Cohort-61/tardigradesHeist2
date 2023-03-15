@@ -28,22 +28,64 @@ namespace Heist_II
 
                 if (newCrewName.Length > 0)
                 {
-                    Console.Write(
-                        @"Choose a specialty for this crew member:
-                1. Lock Specialist
-                2. Muscle
-                3. Hacker
-                : "
-                    );
-                    int newCrewSpecialty = int.Parse(Console.ReadLine());
+                    int newCrewSpecialty;
+                    while (true)
+                    {
+                        Console.Write(
+                            @"Choose a specialty for this crew member:
+        1. Lock Specialist
+        2. Muscle
+        3. Hacker
+        : "
+                        );
+                        string specialtyInput = Console.ReadLine();
+                        bool isNumber = int.TryParse(specialtyInput, out newCrewSpecialty);
 
-                    // once specialty has been entered prompt to enter crew members skill level as int between 1-100
+                        if (isNumber && newCrewSpecialty >= 1 && newCrewSpecialty <= 3)
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Please choose 1, 2, or 3.");
+                        }
+                    }
+                    int newCrewSkillLevel;
+                    while (true)
+                    {
                     Console.Write("Please enter crew member skill level from 1-100: ");
-                    int newCrewSkillLevel = int.Parse(Console.ReadLine());
+                    string levelInput = Console.ReadLine();
+                    bool isNum = int.TryParse(levelInput, out newCrewSkillLevel); 
+                    if (isNum == true && newCrewSkillLevel >= 1 && newCrewSkillLevel <= 100)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("You blew it, enter a number between 1 and 100");
+                    }
+                    }
 
                     // then prompt user to enter percentage of cut for each mission
+                    int newCrewPercentage = -1;
+                    do 
+                    {
                     Console.Write("Please enter percentage of cut for each mission: ");
-                    int newCrewPercentage = int.Parse(Console.ReadLine());
+                    string newCrewPercentageString = (Console.ReadLine());
+                    int newnewnew;
+                    bool isNum = int.TryParse(newCrewPercentageString, out newnewnew);
+                    if (isNum && newnewnew >= 1 && newnewnew <= 100)
+                    {
+                        newCrewPercentage = newnewnew;
+                    }
+                    else
+                    {
+                        Console.WriteLine("....between 1 and 100....");
+                    }
+                    }
+                    while (newCrewPercentage == -1);
+                    
+
 
                     // once user entered all 3 make instance of appropriate class for that crew member and add to rolodex
                     switch (newCrewSpecialty)
@@ -78,9 +120,7 @@ namespace Heist_II
             */
             Bank bank = new Bank();
             Dictionary<string, int> bankProps = new Dictionary<string, int>();
-            // add the bank props to the dict
-            // order the dictionary keys by value
-            // display the max and min
+
             bankProps["Alarm"] = bank.AlarmScore;
             bankProps["Guards"] = bank.SecurityGuardScore;
             bankProps["Vault"] = bank.VaultScore;
@@ -119,35 +159,63 @@ namespace Heist_II
                     idx++;
                 }
 
-                Console.WriteLine();
-                Console.Write($"Please enter the number of the operative you want to add: ");
-                crewMemberSelection = Console.ReadLine();
-
-                if (crewMemberSelection.Length > 0)
+                int crewMemberIndex;
+                while (true)
                 {
-                    int crewMemberIndex = int.Parse(crewMemberSelection) - 1;
-                    // this is in place of a .Pop method
-                    team.Add(rolodex[crewMemberIndex]);
-                    sumOfCuts += rolodex[crewMemberIndex].PercentageCut;
-                    rolodex.RemoveAt(crewMemberIndex);
-                    rolodex = rolodex
-                        .Where(crewMember => crewMember.PercentageCut + sumOfCuts <= 100)
-                        .ToList();
+                    Console.WriteLine();
+                    Console.Write($"Please enter the number of the operative you want to add: ");
+                    crewMemberSelection = Console.ReadLine();
+
+                    if (crewMemberSelection.Length > 0)
+                    {
+                        bool isNumber = int.TryParse(crewMemberSelection, out crewMemberIndex);
+
+                        if (isNumber && crewMemberIndex >= 1 && crewMemberIndex <= rolodex.Count)
+                        {
+                            // this is in place of a .Pop method
+                            team.Add(rolodex[crewMemberIndex - 1]);
+                            sumOfCuts += rolodex[crewMemberIndex - 1].PercentageCut;
+                            rolodex.RemoveAt(crewMemberIndex - 1);
+                            rolodex = rolodex
+                                .Where(crewMember => crewMember.PercentageCut + sumOfCuts <= 100)
+                                .ToList();
+                            break;
+                        }
+                        else
+                            Console.WriteLine(
+                                $"Please choose an operative # between 1 and {rolodex.Count}"
+                            );
+                    }
                 }
             } while (crewMemberSelection.Length > 0 && rolodex.Count > 0);
 
-            /*
-                Create a new List<IRobber> and store it in a variable called crew.
-                Prompt the user to enter the index of the operative they'd like to include in the heist.
-                Once the user selects an operative, add them to the crew list.
-            */
+            // run the heist
+            Console.WriteLine();
+            Console.WriteLine("Here we go...");
+            Console.WriteLine();
 
-            /*
-                Allow the user to select as many crew members as they'd like from the rolodex.
-                Continue to print out the report after each crew member is selected,
-                    but the report should not include operatives that have already been added to the crew,
-                        or operatives that require a percentage cut that can't be offered.
-            */
+            foreach (Robber teamMember in team)
+            {
+                teamMember.PerformSkill(bank);
+            }
+
+            Console.WriteLine();
+            if (bank.IsSecure == false)
+            {
+                Console.WriteLine(" --- SUCCESS --- ");
+                Console.WriteLine("Here's your payday:");
+                foreach (Robber teamMember in team)
+                {
+                    Console.WriteLine(
+                        $"{teamMember.Name}: ${bank.CashOnHand * teamMember.PercentageCut / 100}"
+                    );
+                }
+            }
+            else
+            {
+                Console.WriteLine(" --- BUSTED --- ");
+                Console.WriteLine("What were you thinking?! I hope you have a great lawyer...");
+            }
         }
     }
 }
